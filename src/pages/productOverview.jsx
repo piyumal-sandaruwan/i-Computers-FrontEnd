@@ -3,6 +3,7 @@ import toast from "react-hot-toast";
 import { useParams } from "react-router-dom"
 import Loader from "../components/loader";
 import axios from "axios";
+import ImageSlider from "../components/imageSlider";
 
 
 export default function ProductOverview(){
@@ -40,7 +41,7 @@ export default function ProductOverview(){
             status=="success" &&
             <div className="w-full h-[calc(100vh-100px)] flex ">
                     <div className="w-1/2 h-full flex justify-center items-center">
-                        <img src={product.images[0] } className="max-w-[80%] max-h-[80%] object-contain" />
+                        <ImageSlider images={product.images}/>
                     </div>
 
                     <div className="w-1/2 h-full p-10 flex flex-col gap-6">
