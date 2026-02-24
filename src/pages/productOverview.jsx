@@ -1,14 +1,15 @@
 import { useState ,useEffect } from "react";
 import toast from "react-hot-toast";
-import { useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import Loader from "../components/loader";
 import axios from "axios";
 import ImageSlider from "../components/imageSlider";
 import { CgChevronRight } from "react-icons/cg";
-import { addToCart,getCart } from "../utils/cart";
+import { addToCart } from "../utils/cart";
 
 
 export default function ProductOverview(){
+    const navigate = useNavigate();
     const params=useParams(); //read the parameters comes with link
     const [product,setProduct]=useState(null);
     const [status,setStatus] = useState("loading");
@@ -64,14 +65,23 @@ export default function ProductOverview(){
 
                                 </h2>
                             </div>
-                            <div className="w-full flex flex-row gap-4 mt-4">
+                            <div className="w-full  flex flex-row gap-4 mt-4">
                                 <button onClick={()=>{
                                     addToCart(product,1)
                                 }} 
                                 className="bg-accent text-white px-6 py-3 rounded hover:bg-accent/90 transition">Add to Cart</button>
                               
                                 <button onClick={()=>{
-                                    console.log(getCart())
+                                    navigate("/checkout",{state:[{
+                                        productId:product.productId,
+                                        name:product.name,
+                                        price:product.price,
+                                        labledPrice:product.labledPrice,
+                                        image:product.images[0],
+                                        quantity:1
+
+            
+                                    }]})
                                 }} 
                                 className="border-2 border-accent text-accent px-6 py-3 rounded hover:bg-accent hover:text-white transition" >Buy Now</button>
                                 

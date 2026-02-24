@@ -1,23 +1,4 @@
-// const sampleCart=[
-//     {
-//         productId:"PRO001",
-//         name:"sampleProduct",
-//         price:100.99,
-//         labledprice:29999,
-//         quantity:1,
-//         image:"image.url"
-//     },
-//     {productId:"PRO002",
-//         name:"sampleProduct2",
-//         price:100.99,
-//         labledprice:29999,
-//         quantity:1,
-//         image:"image.url2"},
-
 import toast from "react-hot-toast";
-
-    
-// ]
 
 export function getCart(){
     const cartString = localStorage.getItem("cart")
@@ -32,19 +13,19 @@ export function getCart(){
 }
 
 export function addToCart(product,quantity){
-    const cart=getCart();
+    const cart= getCart();
     //check if product is already in cart
-    const index=cart.findIndex(
+    const index= cart.findIndex(
         (item)=>{
             return item.productId == product.productId       
-        }
+        } 
     )
     if (index== -1){
         cart.push({
                     productId:product.productId,
                     name:product.name,
                     price:product.price,
-                    labledprice:product.labledPrice,
+                    labledPrice:product.labledPrice,
                     quantity:quantity,
                     image:product.images[0]
 
@@ -75,3 +56,14 @@ export function emptyCart(){
     localStorage.setItem("cart","[]");
 }
 
+export function getCartTotal(){
+    let total=0
+    const cart=getCart()
+
+    cart.forEach(
+        (item) => {
+            total+= item.price*item.quantity;
+        
+    });
+    return total;
+}
