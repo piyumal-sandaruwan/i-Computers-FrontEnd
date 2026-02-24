@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom"
 import Loader from "../components/loader";
 import axios from "axios";
 import ImageSlider from "../components/imageSlider";
+import { CgChevronRight } from "react-icons/cg";
 
 
 export default function ProductOverview(){
@@ -46,6 +47,28 @@ export default function ProductOverview(){
 
                     <div className="w-1/2 h-full p-10 flex flex-col gap-6">
                             <h1 className="text-4xl font-semibold">{product.name}</h1>
+                            <h2 className="text-lg text-secondary/80">{product.productId}</h2>
+                            <h3 className="text-lg text-secondary/80 flex items-center"><CgChevronRight/>{product.category}</h3>
+                            <p className="text-md text-justify text-secondary/90 h-32 overflow-y-auto">{product.description}</p>
+                            <div className="w-full">
+                                {product.labledPrice>product.price &&(
+                                    <h2 className="text-secondary/80 line-through decoration-gold decoration-2 mr-2">
+                                        LKR. {product.labledPrice.toFixed(2)}
+                                    </h2>
+
+                                )}
+
+                                <h2 className="text-accent font-semibold text-3xl">
+                                    LKR. {product.price.toFixed(2)}
+
+                                </h2>
+                            </div>
+                            <div className="w-full flex flex-row gap-4 mt-4">
+                                <button className="bg-accent text-white px-6 py-3 rounded hover:bg-accent/90 transition">Add to Cart</button>
+                                <button className="border-2 border-accent text-accent px-6 py-3 rounded hover:bg-accent hover:text-white transition">Buy Now</button>
+                                
+
+                            </div>
                     </div>
 
             </div>
