@@ -5,6 +5,7 @@ import Loader from "../components/loader";
 import axios from "axios";
 import ImageSlider from "../components/imageSlider";
 import { CgChevronRight } from "react-icons/cg";
+import { addToCart,getCart } from "../utils/cart";
 
 
 export default function ProductOverview(){
@@ -64,8 +65,15 @@ export default function ProductOverview(){
                                 </h2>
                             </div>
                             <div className="w-full flex flex-row gap-4 mt-4">
-                                <button className="bg-accent text-white px-6 py-3 rounded hover:bg-accent/90 transition">Add to Cart</button>
-                                <button className="border-2 border-accent text-accent px-6 py-3 rounded hover:bg-accent hover:text-white transition">Buy Now</button>
+                                <button onClick={()=>{
+                                    addToCart(product,1)
+                                }} 
+                                className="bg-accent text-white px-6 py-3 rounded hover:bg-accent/90 transition">Add to Cart</button>
+                              
+                                <button onClick={()=>{
+                                    console.log(getCart())
+                                }} 
+                                className="border-2 border-accent text-accent px-6 py-3 rounded hover:bg-accent hover:text-white transition" >Buy Now</button>
                                 
 
                             </div>
