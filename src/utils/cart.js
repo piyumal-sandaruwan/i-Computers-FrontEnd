@@ -59,6 +59,8 @@ export function emptyCart(){
 export function getCartTotal(){
     let total=0
     const cart=getCart()
+    
+
 
     cart.forEach(
         (item) => {

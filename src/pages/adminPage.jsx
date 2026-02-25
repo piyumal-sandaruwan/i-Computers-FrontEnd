@@ -1,4 +1,3 @@
-import { FaUsers } from "react-icons/fa";
 import { HiOutlineUsers } from "react-icons/hi";
 import { LiaBoxOpenSolid } from "react-icons/lia";
 import { LuClipboardList, LuUsers } from "react-icons/lu";
@@ -7,6 +6,7 @@ import { Routes, Route, Link } from "react-router-dom";
 import AdminProductsPage from "./admin/adminProductsPage.jsx";
 import AdminAddProductsPage from "./admin/adminAddProductPage.jsx";
 import AdminUpdateProduct from "./admin/adminUpdateProduct.jsx";
+import AdminOrdersPage from "./admin/addminOrdersPage.jsx";
 
 export default function AdminPage(props) {
   return (
@@ -33,7 +33,8 @@ export default function AdminPage(props) {
         
         
         <Routes>
-          <Route path="/" element={<h1>Orders Dashboard</h1>} />
+
+          <Route path="/" element={<AdminOrdersPage/>} />
           <Route path="/products" element={<AdminProductsPage />} />
           <Route path="/add-product" element={<AdminAddProductsPage />}/>
           <Route path="/update-product" element={<AdminUpdateProduct/>}/>

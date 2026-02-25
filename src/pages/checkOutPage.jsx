@@ -1,10 +1,15 @@
 import { useState, useEffect } from "react"
+import toast from "react-hot-toast";
 import { BsChevronUp } from "react-icons/bs"
 import { useLocation, useNavigate } from "react-router-dom"
+import axios from "axios";
 
 export default function checkOutPage() {
     const location = useLocation();
     const navigate = useNavigate();
+    const [name,setName]=useState("");
+    const[address,setAddress]=useState("");
+    const[phone,setPhone] = useState("")
     
     // Initialize state with location state or empty array
     const [cart, setCart] = useState(location.state || [])
@@ -27,6 +32,42 @@ export default function checkOutPage() {
             total+=item.price*item.quantity
         })
         return total
+    }
+    async function submitOrder(){
+
+        const token= localStorage.getItem("token")
+        
+        if(token==null){
+            toast.error("you must log in to plac an order");
+            navigate("/login")
+            return;
+        }
+
+        const  orderItems=[]
+        cart.forEach((item)=>{
+            orderItems.push({
+                productId:item.productId,
+                quantity:item.quantity
+            })
+        });
+        axios.post(import.meta.env.VITE_BACKEND_URL+"/orders",{
+            name:name,
+            address:address,
+            phone:phone,
+            items:orderItems
+        },{
+            headers:{
+                "Authorization":`Bearer ${token}`
+            }
+        }
+
+    ).then(()=>{
+        toast.success("Order Placed Successfully")
+        navigate("/orders");
+    }).catch(()=>{
+        toast.error("Error Placing Order");
+    })
+
     }
 
     return (
@@ -119,9 +160,54 @@ export default function checkOutPage() {
                 )
             })}
 
-            {/* Grand Total & Order Section */}
-            {cart.length > 0 && (
-                <div className="w-full max-w-4xl h-32 bg-white rounded-2xl border border-slate-100 shadow-lg flex items-center justify-between px-10 mt-4 mb-10">
+            
+            
+            {/* user inputs */}
+            
+            {/* User Inputs Form - Styled to match product cards */}
+                    <div className="w-full max-w-4xl bg-white rounded-2xl border border-slate-100 shadow-lg p-8 mt-4">
+                        <h2 className="text-xl font-bold text-slate-800 mb-6 border-b border-slate-100 pb-2">Delivery Details</h2>
+                        
+                        <div className="flex flex-col gap-4">
+                            <div className="flex flex-col gap-1">
+                                <label className="text-sm font-semibold text-slate-600">Full Name</label>
+                                <input
+                                    type="text"
+                                    value={name}
+                                    placeholder="Enter your full name"
+                                    onChange={e => setName(e.target.value)}
+                                    className="w-full border border-gray-200 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-slate-800 transition-all bg-gray-50"
+                                />
+                            </div>
+
+                            <div className="flex flex-col gap-1">
+                                <label className="text-sm font-semibold text-slate-600">Address</label>
+                                <input
+                                    type="text"
+                                    value={address}
+                                    placeholder="Enter delivery address"
+                                    onChange={e => setAddress(e.target.value)}
+                                    className="w-full border border-gray-200 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-slate-800 transition-all bg-gray-50"
+                                />
+                            </div>
+
+                            <div className="flex flex-col gap-1">
+                                <label className="text-sm font-semibold text-slate-600">Phone Number</label>
+                                <input
+                                    type="text"
+                                    value={phone}
+                                    placeholder="Enter phone number"
+                                    onChange={e => setPhone(e.target.value)}
+                                    className="w-full border border-gray-200 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-slate-800 transition-all bg-gray-50"
+                                />
+                            </div>
+                        </div>
+                    </div>
+
+                    
+                {/* total and order now */}
+                    {cart.length > 0 && (
+                <div className="w-full max-w-4xl h-32 bg-white rounded-2xl border border-slate-100 shadow-lg flex items-center justify-between px-10 mt-4 mb-10 sticky bottom-4 z-20">
                     <div>
                         <p className="text-sm text-slate-400 uppercase font-semibold tracking-wider">Grand Total</p>
                         <div className="flex items-baseline gap-2">
@@ -132,15 +218,32 @@ export default function checkOutPage() {
                         </div>
                     </div>
 
-                    <button className="bg-slate-900 text-white px-12 py-4 rounded-xl font-bold text-lg hover:bg-slate-800 transition-all shadow-lg active:scale-95">
+                    <button className="bg-slate-900 text-white px-12 py-4 rounded-xl font-bold text-lg hover:bg-slate-800 transition-all shadow-lg active:scale-95" onClick={submitOrder}
+
+                    
+
+                    
+
+                    >
                         Order Now
                     </button>
                 </div>
             )}
 
+                
+                       
+
+                    
+            
             {cart.length === 0 && (
                 <div className="mt-20 text-slate-400 text-center">
                     <p className="text-xl">Your cart is empty</p>
+                    <button 
+                        onClick={() => navigate("/products")}
+                        className="mt-4 text-slate-800 underline font-semibold hover:text-slate-600"
+                    >
+                        Go back to shopping
+                    </button>
                 </div>
             )}
         </div>
