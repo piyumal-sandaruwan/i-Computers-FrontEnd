@@ -6,7 +6,7 @@ import { Routes, Route, Link } from "react-router-dom";
 import AdminProductsPage from "./admin/adminProductsPage.jsx";
 import AdminAddProductsPage from "./admin/adminAddProductPage.jsx";
 import AdminUpdateProduct from "./admin/adminUpdateProduct.jsx";
-import AdminOrdersPage from "./admin/addminOrdersPage.jsx";
+import AdminOrdersPage from "./admin/adminOrdersPage.jsx";
 
 export default function AdminPage(props) {
   return (

@@ -1,30 +1,106 @@
 import { BiShoppingBag } from "react-icons/bi";
+import { LuListCollapse } from "react-icons/lu";
+// import { AiOutlineMenu } from "react-icons/ai";
 import { Link } from "react-router-dom";
+import { useState } from "react";
 
 export default function Header() {
+  const[sideBarOpen,setSideBarOpen]=useState(false)
+
   return (
-    <header className="w-full h-16 bg-accent text-white flex items-center px-4">
-     
-      <img 
+    <header className="w-full h-[100px] bg-accent text-white flex items-center px-4">
+     <LuListCollapse  className="text-2xl lg:hidden " onClick={()=>{setSideBarOpen(true)}}/>
+     {/* <AiOutlineMenu  className="text-2xl lg:hidden"/> */}
+           <img 
         src="/logo.png" 
         className="h-full w-auto object-contain" 
         alt="iComputers Logo" 
       />  
+     
       
-      <div className="w-full h-full flex  justify-center items-center gap-[30px]">
+      <div className="w-full h-full lg:flex  hidden  justify-center items-center gap-[30px]">
         <Link title="Home" to="/" className="hover:text-gray-300 transition-colors">Home</Link>
         <Link title="Products" to="/products" className="hover:text-gray-300 transition-colors">Products</Link>
         <Link title="Contact" to="/contact" className="hover:text-gray-300 transition-colors">Contact Us</Link>
         <Link title="About" to="/about" className="hover:text-gray-300 transition-colors">About Us</Link>
+        
       </div>
+      <Link to="/cart" className="absolute right-4 top-[25px] translate-y-1/2 text-primary text-2xl">
+          <BiShoppingBag/>
+        </Link>
+
+     {   
+      sideBarOpen&& 
+      <div className="fixed w-[100vw] h-screen top-0 left-0 bg-black/50 z-20 transition-all lg:hidden duration-300">
+            <div className="  w-[250px] h-screen flex-col relative     ">
+              <div className="absolute left-[-250px] bg-white transform-flat translate-x-[250px]  transition-transform duration-300 w-full h-full flex flex-col">
+                  <div className="w-full h-[100px] bg-accent text-white flex items-center px-4">
+                          <img 
+            src="/logo.png" 
+            className="h-full w-auto object-contain" 
+            alt="iComputers Logo" 
+          />  
+          <LuListCollapse  className="text-2xl  my-auto ml-[85px]  lg:hidden rotate-180" onClick={
+            ()=>{setSideBarOpen(false)}}/>
+
+                  </div>
+                  {/* Sidebar Links */}
+            <div className="flex flex-col text-accent text-lg mt-8 px-6 gap-6">
+              
+              <Link
+                to="/"
+                className="hover:text-secondary transition duration-200"
+                onClick={() => setSideBarOpen(false)}
+              >
+                Home
+              </Link>
+
+              <Link
+                to="/products"
+                className="hover:text-secondary transition duration-200"
+                onClick={() => setSideBarOpen(false)}
+              >
+                Products
+              </Link>
+
+              <Link
+                to="/contact"
+                className="hover:text-secondary transition duration-200"
+                onClick={() => setSideBarOpen(false)}
+              >
+                Contact Us
+              </Link>
+
+              <Link
+                to="/about"
+                className="hover:text-secondary transition duration-200"
+                onClick={() => setSideBarOpen(false)}
+              >
+                About Us
+              </Link>
+
+              <Link
+                to="/cart"
+                className="hover:text-secondary transition duration-200"
+                onClick={() => setSideBarOpen(false)}
+              >
+                Cart
+              </Link>
+
+            </div>
+              </div>
+            </div>
+          </div>
+      }
+
       
       {/* Spacer to balance the logo on the left if needed */}
-      <div className="w-[100px]  md:block"> 
+      {/* <div className="w-[100px]  md:block"> 
           <Link to="/cart" className="right-4 top-1/2 translate y-12 text-white text-2xl">
           <BiShoppingBag/>
           </Link>
           
-      </div>
+      </div> */}
     </header>
   );
 }
