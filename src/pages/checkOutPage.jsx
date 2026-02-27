@@ -71,56 +71,73 @@ export default function checkOutPage() {
     }
 
     return (
-        <div className="w-full min-h-screen bg-gray-50 flex flex-col items-center p-6 gap-4">
-            <h1 className="text-3xl font-bold self-start max-w-4xl mx-auto w-full mb-4">Checkout Summary</h1>
-
-            {/* Added 'index' here to the map function */}
+        <div className="w-full  min-h-screen bg-gray-50 flex flex-col items-center p-4 lg:p-6 gap-4">
+            <h1 className="text-3xl font-bold self-start max-w-4xl mx-auto w-full lg:w-[60%] mb-4">
+                Checkout Summary
+            </h1>
+            
             {cart.map((item, index) => {
                 return (
                     <div
-                        key={item.productId}
-                        className="w-full max-w-4xl h-40 bg-white rounded-2xl border border-slate-100 shadow-lg hover:shadow-md transition-shadow flex overflow-hidden"
-                    >
-                        {/* Image Section */}
-                        <div className="h-full aspect-square bg-slate-100">
-                            <img src={item.image} className="h-full aspect-square object-cover bg-gray-100" />
+                        key={index}
+                        className="lg:w-[60%] bg-white w-full max-w-4xl relative rounded-2xl border border-slate-100 shadow-lg hover:shadow-md lg:h-[150px] transition-shadow flex items-center p-2 lg:p-0 lg:overflow-hidden"
+                >
+                        {/* Mobile Title - Pinned to top left */}
+                    <h1 className="absolute top-[-10px] w-auto py-[2px] px-[8px] rounded-lg shadow-sm bg-white left-0 lg:hidden font-bold text-xs text-slate-600 truncate ">
+                        {item.name}
+                    </h1>
+
+                        {/* Image & Mobile Unit Price Section */}
+                    <div className="flex flex-col items-center lg:h-full">
+                        <div className="aspect-square h-[80px] lg:h-full overflow-hidden rounded-lg lg:rounded-none">
+                            <img 
+                                src={item.image} 
+                                alt={item.name}
+                                className="h-full w-full object-cover bg-gray-100" 
+                            />
                         </div>
+                        {/* Mobile-only Unit Prices */}
+                        <div className="lg:hidden mt-1 text-center">
+                            {item.labledPrice > item.price && (
+                                <p className="text-[9px] text-slate-400 line-through">
+                                    LKR {item.labledPrice.toFixed(2)}
+                                </p>
+                            )}
+                            <p className="text-[10px] font-bold text-blue-800">
+                                LKR {item.price.toFixed(2)}
+                            </p>
+                        </div>
+                    </div>
 
-                        {/* Product Info Section */}
-                        <div className="flex-1 flex flex-col justify-center pl-6">
-                            <div className="relative group">
-                                <h1 className="text-xl font-bold text-slate-800 cursor-default">
-                                    {item.name.length > 25 ?
-                                        item.name.substring(0, 25) + "..." :
-                                        item.name
-                                    }
-                                </h1>
-
-                                <span className="absolute left-0 -bottom-8 opacity-0 group-hover:opacity-100 transition-opacity bg-slate-800 text-white text-xs py-1 px-2 rounded z-10 whitespace-nowrap">
+                        {/* Desktop Product Info Section (Hidden on Mobile) */}
+                    <div className="hidden lg:flex flex-1 flex-col justify-center pl-6">
+                        <div className="relative group">
+                            <h1 className="text-xl font-bold text-slate-800">
+                                {item.name.length > 25 ? item.name.substring(0, 25) + "..." : item.name}
+                            </h1>
+                            <span className="absolute left-0 -bottom-8 opacity-0 group-hover:opacity-100 transition-opacity bg-slate-800 text-white text-xs py-1 px-2 rounded z-10 whitespace-nowrap">
                                     {item.name}
                                 </span>
-                            </div>
-
-                            <p className="text-xs font-mono text-slate-400 mt-1 uppercase tracking-wider">
-                                ID: {item.productId}
-                            </p>
-
-                            <div className="flex items-center gap-2 mt-3">
-                                <h2 className="text-xl font-bold text-accent">
-                                    LKR {item.price.toFixed(2)}
-                                </h2>
-                                {item.labledPrice > item.price && (
-                                    <h2 className="text-sm text-slate-400 line-through decoration-amber-500/50">
-                                        LKR {item.labledPrice.toFixed(2)}
-                                    </h2>
-                                )}
-                            </div>
                         </div>
+                        <p className="text-xs font-mono text-slate-400 mt-1 uppercase">
+                            ID: {item.productId}
+                        </p>
+                        <div className="flex lg:flex-col items-center lg:items-start gap-2 mt-3">
+                            {item.labledPrice > item.price && (
+                                <h2 className="text-sm text-slate-400 line-through decoration-amber-500/50">
+                                    LKR {item.labledPrice.toFixed(2)}
+                                </h2>
+                            )}
+                            <h2 className="text-lg font-bold text-slate-900">
+                                LKR {item.price.toFixed(2)}
+                            </h2>
+                        </div>
+                    </div>
 
                         {/* Controls & Subtotal Section */}
-                        <div className="flex items-center pr-6 gap-8">
+                        <div className="flex flex-1 items-center justify-between lg:justify-end lg:gap-12 px-4">
                             {/* Quantity Controls */}
-                            <div className="w-12 h-24 border border-gray-200 rounded-lg flex flex-col justify-between items-center py-2 shadow-sm bg-white">
+                            <div className="w-12 h-24   flex flex-col justify-between items-center py-2  bg-white">
                                 <button className="p-1 hover:text-accent transition-colors">
                                     <BsChevronUp
                                         className="text-lg cursor-pointer"
@@ -148,12 +165,14 @@ export default function checkOutPage() {
                             </div>
 
                             {/* Total Price for Item */}
-                            <div className="w-32 text-right flex flex-col">
-                                <p className="text-xs text-slate-400 uppercase font-semibold">Total</p>
-                                <span className="text-xl font-black text-slate-700">LKR</span>
-                                <span className="text-xl font-black text-slate-800">
+                            <div className="p-2 rounded-md text-right min-w-[100px] lg:min-w-[140px]">
+                                <p className="text-[10px] lg:text-xs text-slate-500 uppercase font-bold leading-none">Total</p>
+                                <div className="flex flex-col">
+                                <span className="text-xs lg:text-sm font-black text-slate-600">LKR</span>
+                                 <span className="text-lg lg:text-2xl font-black text-slate-900 break-all leading-tight">
                                     {(item.price * item.quantity).toFixed(2)}
                                 </span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -165,7 +184,7 @@ export default function checkOutPage() {
             {/* user inputs */}
             
             {/* User Inputs Form - Styled to match product cards */}
-                    <div className="w-full max-w-4xl bg-white rounded-2xl border border-slate-100 shadow-lg p-8 mt-4">
+                    <div className="w-full lg:w-[60%] max-w-4xl bg-white rounded-2xl border border-slate-100 shadow-lg p-8 mt-4">
                         <h2 className="text-xl font-bold text-slate-800 mb-6 border-b border-slate-100 pb-2">Delivery Details</h2>
                         
                         <div className="flex flex-col gap-4">
@@ -207,18 +226,19 @@ export default function checkOutPage() {
                     
                 {/* total and order now */}
                     {cart.length > 0 && (
-                <div className="w-full max-w-4xl h-32 bg-white rounded-2xl border border-slate-100 shadow-lg flex items-center justify-between px-10 mt-4 mb-10 sticky bottom-4 z-20">
+                <div className="w-full lg:w-[60%] max-w-4xl bg-white rounded-2xl border border-slate-100 shadow-xl flex flex-col sm:flex-row items-center justify-between p-6 lg:px-10 mt-4 mb-10 sticky bottom-4 z-20 gap-4">
                     <div>
-                        <p className="text-sm text-slate-400 uppercase font-semibold tracking-wider">Grand Total</p>
+                        <p className="text-sm text-slate-400 uppercase font-semibold">Grand Total</p>
                         <div className="flex items-baseline gap-2">
                             <span className="text-xl font-bold text-slate-500">LKR</span>
-                            <span className="text-4xl font-black text-slate-900">
+                            <span className="text-3xl lg:text-4xl font-black text-slate-900">
                                 {getCartTotal().toFixed(2)}
                             </span>
                         </div>
                     </div>
 
-                    <button className="bg-slate-900 text-white px-12 py-4 rounded-xl font-bold text-lg hover:bg-slate-800 transition-all shadow-lg active:scale-95" onClick={submitOrder}
+                    <button className="w-full sm:w-auto bg-slate-900 text-white px-10 py-4 rounded-xl font-bold text-lg hover:bg-slate-800 transition-all text-center active:scale-95" 
+                    onClick={submitOrder}
 
                     
 
@@ -229,7 +249,7 @@ export default function checkOutPage() {
                     </button>
                 </div>
             )}
-
+        
                 
                        
 
