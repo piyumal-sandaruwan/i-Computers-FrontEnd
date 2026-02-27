@@ -237,7 +237,7 @@ export default function checkOutPage() {
                         </div>
                     </div>
 
-                    <button className="w-full sm:w-auto bg-slate-900 text-white px-10 py-4 rounded-xl font-bold text-lg hover:bg-slate-800 transition-all text-center active:scale-95" 
+                    <button className="w-full cursor-pointer sm:w-auto bg-slate-900 text-white px-10 py-4 rounded-xl font-bold text-lg hover:bg-slate-800 transition-all text-center active:scale-95" 
                     onClick={submitOrder}
 
                     
@@ -260,7 +260,7 @@ export default function checkOutPage() {
                     <p className="text-xl">Your cart is empty</p>
                     <button 
                         onClick={() => navigate("/products")}
-                        className="mt-4 text-slate-800 underline font-semibold hover:text-slate-600"
+                        className="mt-4 text-slate-800 underline font-semibold cursor-pointer hover:text-slate-600"
                     >
                         Go back to shopping
                     </button>

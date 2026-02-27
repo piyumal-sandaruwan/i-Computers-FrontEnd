@@ -7,12 +7,12 @@ import ImageSlider from "../components/imageSlider";
 import { CgChevronRight } from "react-icons/cg";
 import { addToCart } from "../utils/cart";
 
-
 export default function ProductOverview(){
     const navigate = useNavigate();
-    const params=useParams(); //read the parameters comes with link
+    const params=useParams();
     const [product,setProduct]=useState(null);
     const [status,setStatus] = useState("loading");
+
     useEffect(()=>{
         if(status=="loading"){
             axios.get(import.meta.env.VITE_BACKEND_URL + "/products/" + params.productId).then(
@@ -24,74 +24,97 @@ export default function ProductOverview(){
                 ()=>{
                     toast.error("Product Not Found")
                     setStatus("error");
-                    
                 }
             )
-
         }
     },[])
+
     return(
         <>
-        {
-            status=="loading" && <Loader/>
+        { status=="loading" && <Loader/> }
+
+        { status=="error" && 
+            <h1 className="text-center mt-10 text-2xl">
+                Error Loading Product
+            </h1>
         }
 
-        {
-            status=="error" && <h1 className="text-center mt-10 text-2xl">Error Loading Product</h1>
-        }
+        { status=="success" &&
+            <div className="w-full min-h-[calc(100vh-100px)] flex lg:flex-row flex-col">
 
-        {
-            status=="success" &&
-            <div className="w-full h-[calc(100vh-100px)] flex ">
-                    <div className="w-1/2 h-full flex justify-center items-center">
-                        <ImageSlider images={product.images}/>
+                <h1 className="text-4xl text-center sticky bg-white top-0 lg:hidden block font-semibold">
+                    {product.name}
+                </h1>
+
+                {/* LEFT SIDE */}
+                <div className="lg:w-1/2 w-full  lg:h-full lg:mt-3 flex">
+                    <ImageSlider images={product.images}/>
+                </div>
+
+                {/* RIGHT SIDE */}
+                <div className="lg:w-1/2 w-full  lg:h-full p-10 flex flex-col gap-6">
+
+                    <h1 className="text-4xl hidden lg:block font-semibold">
+                        {product.name}
+                    </h1>
+
+                    <h2 className="text-lg text-slate-600">
+                        PRODUCT ID : {product.productId}
+                    </h2>
+
+                    <h2 className="text-lg font-semibold text-accent flex items-center">
+                        <CgChevronRight/>
+                        {product.category}
+                    </h2>
+
+                    <p className="text-md text-justify p-3 text-secondary/90  overflow-y-auto">
+                        {product.description}
+                    </p>
+
+                    <div className="w-full">
+                        {product.labledPrice>product.price &&(
+                            <h2 className="text-secondary/80 line-through decoration-amber-400 decoration-2 mr-2">
+                                LKR. {product.labledPrice.toFixed(2)}
+                            </h2>
+                        )}
+
+                        <h2 className="text-accent font-semibold text-3xl">
+                            LKR. {product.price.toFixed(2)}
+                        </h2>
                     </div>
 
-                    <div className="w-1/2 h-full p-10 flex flex-col gap-6">
-                            <h1 className="text-4xl font-semibold">{product.name}</h1>
-                            <h2 className="text-lg text-secondary/80">{product.productId}</h2>
-                            <h3 className="text-lg text-secondary/80 flex items-center"><CgChevronRight/>{product.category}</h3>
-                            <p className="text-md text-justify text-secondary/90 h-32 overflow-y-auto">{product.description}</p>
-                            <div className="w-full">
-                                {product.labledPrice>product.price &&(
-                                    <h2 className="text-secondary/80 line-through decoration-gold decoration-2 mr-2">
-                                        LKR. {product.labledPrice.toFixed(2)}
-                                    </h2>
+                    <div className="w-full flex justify-center lg:justify-start   flex-row gap-4 mt-4">
 
-                                )}
+                        <button
+                            onClick={()=>{
+                                addToCart(product,1)
+                            }}
+                            className="bg-accent text-white px-6 py-3 rounded hover:bg-accent/90 transition"
+                        >
+                            Add to Cart
+                        </button>
 
-                                <h2 className="text-accent font-semibold text-3xl">
-                                    LKR. {product.price.toFixed(2)}
+                        <button
+                            onClick={()=>{
+                                navigate("/checkout",{state:[{
+                                    productId:product.productId,
+                                    name:product.name,
+                                    price:product.price,
+                                    labledPrice:product.labledPrice,
+                                    image:product.images[0],
+                                    quantity:1
+                                }]})
+                            }}
+                            className="border-2 border-accent text-accent px-6 py-3 rounded hover:bg-accent hover:text-white transition"
+                        >
+                            Buy Now
+                        </button>
 
-                                </h2>
-                            </div>
-                            <div className="w-full  flex flex-row gap-4 mt-4">
-                                <button onClick={()=>{
-                                    addToCart(product,1)
-                                }} 
-                                className="bg-accent text-white px-6 py-3 rounded hover:bg-accent/90 transition">Add to Cart</button>
-                              
-                                <button onClick={()=>{
-                                    navigate("/checkout",{state:[{
-                                        productId:product.productId,
-                                        name:product.name,
-                                        price:product.price,
-                                        labledPrice:product.labledPrice,
-                                        image:product.images[0],
-                                        quantity:1
-
-            
-                                    }]})
-                                }} 
-                                className="border-2 border-accent text-accent px-6 py-3 rounded hover:bg-accent hover:text-white transition" >Buy Now</button>
-                                
-
-                            </div>
                     </div>
+                </div>
 
             </div>
         }
         </>
-
     )
 }

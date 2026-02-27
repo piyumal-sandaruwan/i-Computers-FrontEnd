@@ -5,9 +5,9 @@ export default function ProductCard(props) {
 
   return (
     /* 1. Added "group" class to the main parent container */
-    <div className="w-[300px] h-[400px] shadow-2xl m-4 cursor-pointer relative group">
+    <Link to = {"/overview/"+product.productId}  className="w-[300px] h-[400px] shadow-2xl m-4 cursor-pointer relative group">
       
-      <div className="w-full h-[250px] relative">
+      <div className="w-full  h-[250px] relative">
         {/* 2. Secondary Image (Background) - Removed hover effects so it stays visible */}
         <img 
           src={product.images[1]} 
@@ -24,7 +24,7 @@ export default function ProductCard(props) {
       </div>
 
       <div className="w-full h-[150px] p-2 flex flex-col justify-between">
-        <h1 className="text-black text-lg">{product.name}</h1>
+        <h1 className="text-accent/90 font-bold text-center text-xl">{product.name}</h1>
         <div className="w-full flex flex-col items-center">
           {
             product.labledPrice > product.price && (
@@ -42,14 +42,15 @@ export default function ProductCard(props) {
 
       {/* 4. Bottom Overlay Div - Uses group-hover:opacity-100 to show up when the card is hovered */}
       <div className="w-full h-[150px] bg-white bottom-0 absolute flex flex-row justify-center items-center gap-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">
-        <Link 
+        <button 
+
           to={"/overview/"+ product.productId}  
-          className="px-4 py-2 bg-accent text-white rounded-md hover:bg-accent/70 transition-colors duration-150 h-[50px] w-[150px] text-center flex justify-center items-center"
+          className="px-4 py-2 cursor-pointer bg-accent text-white rounded-md hover:bg-accent/70 transition-colors duration-150 h-[50px] w-[150px]  text-center flex justify-center items-center"
         >
           View Details
-        </Link>
+        </button>
       </div>
       
-    </div>
+    </Link>
   );
 }

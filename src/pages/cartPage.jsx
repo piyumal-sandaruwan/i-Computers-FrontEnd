@@ -81,14 +81,14 @@ export default function CartPage() {
                         <div className="flex flex-col items-center justify-center">
                             <button 
                                 onClick={() => updateQuantity(item, 1)}
-                                className="p-1 hover:text-blue-600 transition-colors"
+                                className="p-1 hover:text-blue-600 transition-colors cursor-pointer"
                             >
                                 <BsChevronUp className="text-lg" />
                             </button>
                             <span className="text-lg font-bold w-8 text-center">{item.quantity}</span>
                             <button 
                                 onClick={() => updateQuantity(item, -1)}
-                                className="p-1 hover:text-blue-600 transition-colors"
+                                className="p-1 hover:text-blue-600 cursor-pointer transition-colors"
                             >
                                 <BsChevronUp className="rotate-180 text-lg" />
                             </button>
