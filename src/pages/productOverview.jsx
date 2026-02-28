@@ -89,7 +89,7 @@ export default function ProductOverview(){
                             onClick={()=>{
                                 addToCart(product,1)
                             }}
-                            className="bg-accent text-white px-6 py-3 rounded hover:bg-accent/90 transition"
+                            className="bg-accent text-white px-6 py-3 cursor-pointer rounded hover:bg-accent/90 transition"
                         >
                             Add to Cart
                         </button>
@@ -105,7 +105,7 @@ export default function ProductOverview(){
                                     quantity:1
                                 }]})
                             }}
-                            className="border-2 border-accent text-accent px-6 py-3 rounded hover:bg-accent hover:text-white transition"
+                            className="border-2 border-accent text-accent px-6 py-3 rounded hover:bg-accent cursor-pointer hover:text-white transition"
                         >
                             Buy Now
                         </button>
