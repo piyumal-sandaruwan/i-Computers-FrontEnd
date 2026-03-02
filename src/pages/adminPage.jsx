@@ -27,21 +27,23 @@ export default function AdminPage(props) {
         Authorization: `Bearer ${token}`,
       },
     }).then((response) => {
+      console.log
       // Accessing response.data.role to verify user authority
       if (response.data.role === "admin") {
         setUser(response.data);
       } else {
-        window.location.href = '/';
+        window.location.href = "/";
       }
     }).catch(() => {
       window.location.href = "/login";
+      
     });
   }, []);
 
   return (
     <div className="w-full pl-[20px] pt-[10px] h-full max-h-full flex bg-accent">
       {/* Sidebar */}
-      {user ? (
+      {user ? 
         <>
           <div className="w-[200px] pl-[10px] max-h-full h-full bg-accent rounded-2xl">
             {/* Header */}
@@ -70,10 +72,10 @@ export default function AdminPage(props) {
               <Route path="/reviews" element={<h1>Reviews</h1>} />
             </Routes>
           </div>
-        </>
-      ) : (
+        </>:
+      
         <Loader />
-      )}
+}
     </div>
   );
 }

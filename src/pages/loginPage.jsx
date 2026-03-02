@@ -4,19 +4,19 @@ import axios from "axios";
 import toast from "react-hot-toast";  
 
 export default function LoginPage(props) {
-    const [MdEmail, setEmail] = useState("");
-    const [MdPassword, setPassword] = useState("");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
     const navigate = useNavigate(); // Initialize navigate
 
     async function handleLogin() {
         console.log("Login clicked")
-        console.log("Email:", MdEmail)
-        console.log("Password:", MdPassword)
+        console.log("Email:", email)
+        console.log("Password:", password)
         
         try{
         const res = await axios.post(import.meta.env.VITE_BACKEND_URL + "/users/login",{ 
-            email: MdEmail,
-            password: MdPassword 
+            email: email,
+            password: password 
 
         });
         console.log(res)
