@@ -8,24 +8,23 @@ import { Toaster } from 'react-hot-toast';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 
 function App() {
+  
   const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
+
   return (
     <GoogleOAuthProvider clientId={googleClientId}>
-    <BrowserRouter>
-      <Toaster position='top-right' />
-      <div className="w-full h-screen bg-primary">
-        <Routes>
-          <Route path='/login' element={<LoginPage />} />
-          <Route path='/register' element={<RegisterPage />} />
-          
-          
-          <Route path='/admin/*' element={<AdminPage />} />
-          
-          <Route path="/test" element={<TestPage />} />
-          <Route path="/*" element={<HomePage />} />
-        </Routes> 
-      </div>
-    </BrowserRouter>
+      <BrowserRouter>
+        <Toaster position='top-right' />
+        <div className="w-full h-screen bg-primary">
+          <Routes>
+            <Route path='/login' element={<LoginPage />} />
+            <Route path='/register' element={<RegisterPage />} />
+            <Route path='/admin/*' element={<AdminPage />} />
+            <Route path="/test" element={<TestPage />} />
+            <Route path="/*" element={<HomePage />} />
+          </Routes> 
+        </div>
+      </BrowserRouter>
     </GoogleOAuthProvider>
   );
 }
