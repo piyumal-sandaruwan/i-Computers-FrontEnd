@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import toast from "react-hot-toast";
+import Loader from "../components/loader";
 
 export default function RegisterPage(props) {
     const [firstName, setFirstName] = useState("");
@@ -9,44 +10,54 @@ export default function RegisterPage(props) {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
-    
+    const [isLoading,setIsLoading] = useState(false)
     const navigate = useNavigate();
 
     async function handleRegister() {
-        if (!firstName || !lastName || !email || !password) {
-            toast.error("Please fill in all fields.");
-            return;
-        }
-
-        if (password !== confirmPassword) {
-            toast.error("Passwords do not match!");
-            return;
-        }
-        
-        try {
-            await axios.post(import.meta.env.VITE_BACKEND_URL + "/users/", { 
-                firstName,
-                lastName,
-                email,
-                password 
-            });
-            
-            toast.success("Registration successful! Please login.");
-            navigate("/login"); 
-        } catch (err) {
-            toast.error("Registration failed. Please check your details.");
-        }
+    // 1. Validation
+    if (firstName.trim() === "") { toast.error("First Name Required"); return; }
+    if (lastName.trim() === "") { toast.error("Last Name Required"); return; }
+    if (email.trim() === "") { toast.error("Email is Required"); return; }
+    if (password.trim() === "") { toast.error("Password is Required"); return; }
+    if (confirmPassword.trim() === "") { toast.error("Confirm Password is Required"); return; }
+    
+    if (password !== confirmPassword) {
+        toast.error("Passwords Do Not Match");
+        return;
     }
+
+    // 2. Request Lifecycle
+    setIsLoading(true);
+    try {
+        await axios.post(import.meta.env.VITE_BACKEND_URL + "/users/", { 
+            firstName: firstName.trim(),
+            lastName: lastName.trim(),
+            email: email.trim(),
+            password: password.trim()
+        });
+
+        toast.success("Registration successful!");
+        // Navigate to login after successful registration
+        navigate("/login"); 
+    } catch (err) {
+        toast.error("Registration failed. Please check your details.");
+        console.error(err);
+    } finally {
+        // This ensures the loader disappears regardless of success or failure
+        setIsLoading(false);
+    }
+}
         
     return (
-        <div className="w-full h-screen bg-[url('background.jpg')] bg-cover bg-center bg-no-repeat flex overflow-hidden">
-            {/* Left side brand info */}
-            <div className="w-1/2 h-full flex flex-col justify-center items-center p-10">
-                <img src="logo (1).png" className="w-[200px] h-auto object-contain mb-6" alt="Logo" />
-                <h1 className="font-bold text-white text-4xl text-center max-w-md">
+        <div className="w-full h-screen bg-[url('background.jpg')] bg-cover bg-center bg-no-repeat flex">
+            {/* ... rest of your UI remains the same ... */}
+           
+           <div className="w-1/2 h-full flex flex-col justify-center items-center p-10">
+                <img src="logo (1).png" className="w-[200px] h-auto object-contain " alt="Logo" />
+                <h1 className=" font-bold text-white text-4xl text-center ">
                     Your one-stop shop for all your computer needs
                 </h1>
-                <h1 className="font-bold text-blue-300 text-xl text-center mt-4">
+                <h1 className=" font-bold text-blue-300 text-xl text-center ">
                     Grow your digital world, Join us today
                 </h1>
             </div>
@@ -124,6 +135,8 @@ export default function RegisterPage(props) {
                     </div>
                 </div>
             </div>
+            {isLoading && <Loader/>}
         </div>
+           
     );
 }

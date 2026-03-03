@@ -5,9 +5,11 @@ import RegisterPage from './pages/registerPage.jsx';
 import AdminPage from './pages/adminPage.jsx';
 import { TestPage } from './pages/testPage.jsx';
 import { Toaster } from 'react-hot-toast';
+import { GoogleOAuthProvider } from '@react-oauth/google';
 
 function App() {
   return (
+    <GoogleOAuthProvider clientId="306957233470-07dj9b4m341729uqme065llimfki2igt.apps.googleusercontent.com">
     <BrowserRouter>
       <Toaster position='top-right' />
       <div className="w-full h-screen bg-primary">
@@ -23,6 +25,7 @@ function App() {
         </Routes> 
       </div>
     </BrowserRouter>
+    </GoogleOAuthProvider>
   );
 }
 
