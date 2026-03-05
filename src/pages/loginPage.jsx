@@ -26,13 +26,17 @@ export default function LoginPage() {
                     navigate("/")
                 }
                 toast.success("Login Successfull")
-                setIsLoading(false)
+                
                  
                 
             }).catch((err)=>{
                 console.log(err)
-            });
-            setIsLoading(false)
+                toast.error("Google Login Failed");
+            }).finally(() => {
+            setIsLoading(false); // Move setIsLoading(false) inside finally
+                });
+            
+            
               
 
         },
@@ -49,7 +53,7 @@ export default function LoginPage() {
 
         setIsLoading(true);
         try {
-            const res = await axios.post(import.meta.env.VITE_BACKEND_URL + "/users/google-login", {
+            const res = await axios.post(import.meta.env.VITE_BACKEND_URL + "/users/login", {
                 email: email.trim(),
                 password: password.trim()
             });
@@ -114,7 +118,7 @@ export default function LoginPage() {
                                 className="w-full h-11 px-4 rounded-xl bg-white/20 border border-white/30 text-white placeholder-white/50 focus:outline-none focus:border-accent transition-all text-sm"
                             />
                             <div className="text-right">
-                                <Link to="/forget-password" className="text-accent hover:underline text-xs font-medium">
+                                <Link to="/forgot-password" className="text-accent hover:underline text-xs font-medium">
                                     Forgot password?
                                 </Link>
                             </div>
