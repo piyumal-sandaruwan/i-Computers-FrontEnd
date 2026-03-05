@@ -36,7 +36,7 @@ export default function ForgetPasswordPage() {
             navigate("/login"); // Redirect to login on success
     } catch (err) {
         console.log(err);
-        toast.error("Error resetting Password, Try again later");
+        toast.error(err.response?.data?.message || "Error resetting password");
         setLoading(false);
     }
    }
