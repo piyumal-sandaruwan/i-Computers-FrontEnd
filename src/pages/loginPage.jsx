@@ -63,7 +63,7 @@ export default function LoginPage() {
             toast.success("Login successful!");
 
             // Navigate based on user role
-            if (res.data.role === "admin") {
+            if (res.data.role == "admin") {
                 navigate("/admin");
             } else {
                 navigate("/");
