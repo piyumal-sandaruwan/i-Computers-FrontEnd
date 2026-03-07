@@ -66,7 +66,14 @@ export default function ProductOverview(){
                         <CgChevronRight/>
                         {product.category}
                     </h2>
-
+                    {/*alternative names*/ }
+                    <p className="text-lg font-semibold text-accent flex items-center">
+                        {product.altNames && product.altNames.length>0&&(
+                            <h3 className="text-md text-secondary/80">
+                                {product.altNames.join(" | ")}
+                            </h3>
+                        )}
+                    </p>
                     <p className="text-md text-justify p-3 text-secondary/90  overflow-y-auto">
                         {product.description}
                     </p>

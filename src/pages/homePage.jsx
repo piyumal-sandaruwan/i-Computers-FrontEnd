@@ -9,7 +9,7 @@ import OrdersPage from "./ordersPage";
 export default function HomePage(props){
     return(
         <>
-                <div className="w-full h-full overflow -y-scroll ">
+                <div className="w-full h-full overflow -y-scroll">
                     <Header />
                     <div className="w-full min-h-[calc(100%-100px)]">
                         <Routes>
