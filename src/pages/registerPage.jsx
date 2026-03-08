@@ -49,7 +49,7 @@ export default function RegisterPage(props) {
 }
         
     return (
-        <div className="w-full h-screen bg-[url('background.jpg')] bg-cover bg-center bg-no-repeat flex">
+        <div className="w-full h-screen bg-[url('/background.jpg')] bg-cover bg-center bg-no-repeat flex">
             {/* ... rest of your UI remains the same ... */}
            
            <div className="w-1/2 h-full flex flex-col justify-center items-center p-10">
