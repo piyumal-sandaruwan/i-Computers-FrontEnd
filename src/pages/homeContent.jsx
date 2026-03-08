@@ -45,7 +45,7 @@ export default function Home(){
 
                         <Link
                         to="/products"
-                        className="bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-lg font-semibold transition"
+                        className="bg-green-400 hover:bg-green-600 text-white px-6 py-3 rounded-lg font-semibold transition"
                         >
                             Shop Now
                         </Link>
