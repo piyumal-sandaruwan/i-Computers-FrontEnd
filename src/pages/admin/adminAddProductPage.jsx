@@ -24,8 +24,8 @@ export default function AdminAddProductPage(props) {
 
     async function addProduct() {
         // 1. VALIDATION FIRST (Stops the process immediately if fields are empty)
-        if (productID == "" || productName == "" || price == "" || category == "" || model == "") {
-            toast.error("Please fill in all required fields");
+        if (!productID || !productName || !price || !category || !model) {
+            toast.error("Please fill in all required fields (ID, Name, Price, Category, Model)");
             return;
         }
 
@@ -53,18 +53,18 @@ export default function AdminAddProductPage(props) {
             const altNamesInArray = altNames.split(",").map(name => name.trim());
 
             // 4. BACKEND REQUEST
-            await axios.post(import.meta.env.VITE_BACKEND_URL + "/products/", {
+           await axios.post(import.meta.env.VITE_BACKEND_URL + "/products", {
                 productId: productID,
                 name: productName,
                 altNames: altNamesInArray,
                 description: description,
-                price: price,
-                labledPrice: labledPrice,
+                price: parseFloat(price), // Ensure numbers are sent as numbers
+                labledPrice: parseFloat(labledPrice) || 0,
                 images: images,
                 category: category,
                 brand: brand,
                 model: model,
-                stock: stock,
+                stock: parseInt(stock) || 0,
                 isAvailable: isAvailable
             }, {
                 headers: {
@@ -76,13 +76,14 @@ export default function AdminAddProductPage(props) {
             navigate("/admin/products");
 
         } catch (err) {
-            console.log("Error adding product:", err);
-            toast.error("Error adding product. Please check console.", { id: loadingToast });
+            console.error("Error adding product:", err);
+            // Better error message handling
+            const errorMsg = err.response?.data?.message || "Error adding product.";
+            toast.error(errorMsg, { id: loadingToast });
         } finally {
             setLoading(false);
         }
     }
-
     return (
         <div className="w-full h-full flex overflow-y-scroll items-start p-[50px] justify-center">
             <div className="w-[800px] bg-accent/90 p-[40px] rounded-2xl">
