@@ -78,7 +78,7 @@ export default function LoginPage() {
     }
 
     return (
-        <div className="w-full h-screen bg-[url('background.jpg')] bg-cover bg-center bg-no-repeat flex">
+        <div className="w-full h-screen bg-[url('/background.jpg')] bg-cover bg-center bg-no-repeat flex">
             {/* Left Side Branding */}
             <div className="w-1/2 h-full flex flex-col justify-center items-center p-10">
                 <img src="logo (1).png" className="w-[200px] h-auto object-contain" alt="Logo" />
