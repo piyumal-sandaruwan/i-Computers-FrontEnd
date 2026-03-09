@@ -21,7 +21,7 @@ export default function ProductPage(){
     }, [loaded]);
 
     return(
-        <div className="w-full h-[calc(100vh-100px)] ">
+        <div className="w-full min-h-[calc(100vh-100px)] pb-16">
             {
                 !loaded ? <Loader/> :
                 <div className="w-full flex justify-center flex-row flex-wrap ">
@@ -81,5 +81,5 @@ export default function ProductPage(){
                 </div>
             }
         </div>
-    )
+    );
 }
