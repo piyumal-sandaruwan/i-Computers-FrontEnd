@@ -6,6 +6,7 @@ import CartPage from "./cartPage";
 import CheckOutPage from "./checkOutPage";
 import OrdersPage from "./ordersPage";
 import Home from "./homeContent";
+import Footer from "../components/footer";
 
 export default function HomePage(props){
     return(
@@ -24,6 +25,7 @@ export default function HomePage(props){
                             <Route path="/orders" element={<OrdersPage/>}/>                           
                             <Route path="/*" element={<h1>Page Not Found</h1>} />
                         </Routes>
+                        <Footer />
                     </div>
             
         </div>
