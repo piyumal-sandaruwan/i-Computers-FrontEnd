@@ -50,7 +50,9 @@ export default function RegisterPage(props) {
            
            {/* Left Branding */}
            <div className="w-full md:w-1/2 flex flex-col justify-center items-center p-6 md:p-10 text-center">
-                <img src="logo (1).png" className="w-[140px] md:w-[200px] h-auto object-contain mb-4" alt="Logo" />
+                <Link to="/">
+                 <img src="logo (1).png" className="w-[140px] md:w-[200px] h-auto object-contain mb-4" alt="Logo" />
+               </Link>
 
                 <h1 className="font-bold text-white text-2xl md:text-4xl">
                     Your one-stop shop for all your computer needs
