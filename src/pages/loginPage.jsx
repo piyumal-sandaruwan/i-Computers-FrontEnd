@@ -13,29 +13,54 @@ export default function LoginPage() {
     const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState(false);
     
+    // Helper: decode JWT payload to extract user info as fallback
+    function decodeToken(token) {
+        try {
+            const base64Payload = token.split(".")[1];
+            const decoded = JSON.parse(atob(base64Payload));
+            return {
+                firstName: decoded.firstName,
+                lastName: decoded.lastName,
+                email: decoded.email,
+                image: decoded.image || null
+            };
+        } catch {
+            return null;
+        }
+    }
+
     const googleLogin = useGoogleLogin({
-        onSuccess:(response)=>{
-            setIsLoading(true)
-            axios.post(import.meta.env.VITE_BACKEND_URL+"/users/google-login",{
-                token:response.access_token
-            }).then((res)=>{
-                localStorage.setItem("token",res.data.token);
-                if(res.data.role=="admin"){
-                    navigate("/admin")
-                }else{
-                    navigate("/")
+        onSuccess: (response) => {
+            setIsLoading(true);
+            axios.post(import.meta.env.VITE_BACKEND_URL + "/users/google-login", {
+                token: response.access_token
+            }).then((res) => {
+                console.log("Google login response:", res.data);
+                localStorage.setItem("token", res.data.token);
+
+                // Save user: prefer res.data.user, fallback to decoded token
+                const userData = res.data.user || decodeToken(res.data.token);
+                if (userData) {
+                    localStorage.setItem("user", JSON.stringify(userData));
                 }
-                toast.success("Login Successfull")
-            }).catch((err)=>{
-                console.log(err)
+
+                toast.success("Login Successful");
+
+                if (res.data.role === "admin") {
+                    window.location.href = "/admin";
+                } else {
+                    window.location.href = "/";
+                }
+            }).catch((err) => {
+                console.log(err);
                 toast.error("Google Login Failed");
             }).finally(() => {
                 setIsLoading(false);
             });
         },
-        onError:()=>{toast.error("Google Login Failed ")},
-        onNonOAuthError:()=>{toast.error("Google Login Failed")}
-    })
+        onError: () => { toast.error("Google Login Failed "); },
+        onNonOAuthError: () => { toast.error("Google Login Failed"); }
+    });
 
     async function handleLogin() {
         if (email.trim() === "" || password.trim() === "") {
@@ -50,13 +75,21 @@ export default function LoginPage() {
                 password: password.trim()
             });
 
+            console.log("Login response:", res.data);
             localStorage.setItem("token", res.data.token);
+
+            // Save user: prefer res.data.user, fallback to decoded token
+            const userData = res.data.user || decodeToken(res.data.token);
+            if (userData) {
+                localStorage.setItem("user", JSON.stringify(userData));
+            }
+
             toast.success("Login successful!");
 
-            if (res.data.role == "admin") {
-                navigate("/admin");
+            if (res.data.role === "admin") {
+                window.location.href = "/admin";
             } else {
-                navigate("/");
+                window.location.href = "/products"
             }
         } catch (err) {
             toast.error("Login failed. Please check your credentials.");

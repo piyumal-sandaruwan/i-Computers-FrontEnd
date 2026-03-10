@@ -6,12 +6,16 @@ import axios from "axios";
 import ImageSlider from "../components/imageSlider";
 import { CgChevronRight } from "react-icons/cg";
 import { addToCart } from "../utils/cart";
+import AuthModal from "../components/authModal"; // Import the new modal
 
 export default function ProductOverview(){
     const navigate = useNavigate();
     const params=useParams();
     const [product,setProduct]=useState(null);
     const [status,setStatus] = useState("loading");
+
+    // NEW STATE FOR MODAL
+    const [showAuthModal, setShowAuthModal] = useState(false);
 
     useEffect(()=>{
         if(status=="loading"){
@@ -29,8 +33,20 @@ export default function ProductOverview(){
         }
     },[])
 
+     // HELPER: Check if logged in
+    const checkLoginAndProceed = (action) => {
+        const token = localStorage.getItem("token");
+        if (token) {
+            action(); // If logged in, do the work
+        } else {
+            setShowAuthModal(true); // If not, show popup
+        }
+    };
+
+
     return(
         <>
+        <AuthModal isOpen={showAuthModal} onClose={() => setShowAuthModal(false)} />
         { status=="loading" && <Loader/> }
 
         { status=="error" && 
@@ -94,23 +110,29 @@ export default function ProductOverview(){
 
                         <button
                             onClick={()=>{
-                                addToCart(product,1)
+                                 checkLoginAndProceed(() => {
+                                    addToCart(product, 1);
+                                });
+                                // addToCart(product,1)
                             }}
                             className="bg-accent text-white px-6 py-3 cursor-pointer rounded hover:bg-accent/90 transition"
                         >
                             Add to Cart
                         </button>
 
-                        <button
-                            onClick={()=>{
-                                navigate("/checkout",{state:[{
-                                    productId:product.productId,
-                                    name:product.name,
-                                    price:product.price,
-                                    labledPrice:product.labledPrice,
-                                    image:product.images[0],
-                                    quantity:1
-                                }]})
+                       <button
+                            onClick={() => {
+                                // WRAP IN LOGIN CHECK
+                                checkLoginAndProceed(() => {
+                                    navigate("/checkout", { state: [{
+                                        productId: product.productId,
+                                        name: product.name,
+                                        price: product.price,
+                                        labledPrice: product.labledPrice,
+                                        image: product.images[0],
+                                        quantity: 1
+                                    }]});
+                                });
                             }}
                             className="border-2 border-accent text-accent px-6 py-3 rounded hover:bg-accent cursor-pointer hover:text-white transition"
                         >

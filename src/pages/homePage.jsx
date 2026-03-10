@@ -8,16 +8,17 @@ import OrdersPage from "./ordersPage";
 import Home from "./homeContent";
 import Footer from "../components/footer";
 import AboutPage from "./aboutPage";
+import ContactUsPage from "./contactUsPage";
 export default function HomePage(props){
     return(
         <>
-                <div className="w-full h-full overflow -y-scroll">
+                <div className="w-full h-full overflow-y-auto">
                     <Header />
                     <div className="w-full min-h-[calc(100%-100px)]">
                         <Routes>
                             <Route path="/" element={<Home/>} />
                             <Route path="/products" element={<ProductPage/>} />
-                            <Route path="/contact" element={<h1>Contact Us</h1>} />
+                            <Route path="/contact" element={<ContactUsPage/>} />
                             <Route path="/about" element={<AboutPage/>} />
                             <Route path="/overview/:productId" element={<ProductOverview/>} />
                             <Route path="/cart" element ={<CartPage/>}/>

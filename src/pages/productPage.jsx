@@ -14,7 +14,7 @@ export default function ProductPage(){
             axios.get(import.meta.env.VITE_BACKEND_URL + "/products")
             .then((response) => {
                 setProducts(response.data);
-                console.log(response.data);
+                // console.log(response.data);
                 setLoaded(true);
             });
         }
@@ -27,7 +27,7 @@ export default function ProductPage(){
                 <div className="w-full flex justify-center flex-row flex-wrap ">
 
                     {/* Search Bar */}
-                    <div className="w-full h-[100px] sticky top-0 bg-white flex justify-center items-center mb-4 shadow-md z-10">
+                    <div className="w-full h-[100px] sticky top-0 bg-white flex justify-center items-center mb-4 shadow-md z-1">
                         <input 
                             type="text"
                             placeholder="Search Products ..."

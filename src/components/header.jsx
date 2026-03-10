@@ -18,7 +18,7 @@ export default function Header() {
         />
         <img
           src="/logo.png"
-          className="h-[60px] w-auto object-contain"
+          className="h-[100px] w-auto object-contain"
           alt="iComputers Logo"
         />
       </div>
@@ -42,7 +42,7 @@ export default function Header() {
       </div>
 
       {/* Right Side: User Icon + Shopping Bag */}
-<div className="ml-auto flex items-center gap-6 z-10">
+<div className="ml-auto flex items-center gap-6 z-[999] relative">
   
   {/* Apply hidden on mobile, block on large screens */}
   <div className="hidden lg:block">
