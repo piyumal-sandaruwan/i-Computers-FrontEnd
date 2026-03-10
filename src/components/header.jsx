@@ -8,7 +8,7 @@ export default function Header() {
   const [sideBarOpen, setSideBarOpen] = useState(false);
 
   return (
-    <header className="w-full h-[100px] bg-accent text-white flex items-center px-4 relative">
+    <header className="w-full h-[100px] bg-accent text-white  flex items-center px-4 relative">
       
       {/* 1. Left Side: Menu Icon & Logo */}
       <div className="flex items-center z-10">
