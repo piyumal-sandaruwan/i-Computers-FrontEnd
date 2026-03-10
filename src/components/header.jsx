@@ -16,11 +16,13 @@ export default function Header() {
           className="text-2xl lg:hidden mr-3 cursor-pointer"
           onClick={() => setSideBarOpen(true)}
         />
-        <img
-          src="/logo.png"
-          className="h-[100px] w-auto object-contain"
-          alt="iComputers Logo"
-        />
+        <Link to="/">
+            <img
+             src="/logo.png"
+             className="h-[100px] w-auto object-contain"
+             alt="iComputers Logo"
+             />
+</Link>
       </div>
 
       {/* 2. Center Navigation (Desktop Only) */}
