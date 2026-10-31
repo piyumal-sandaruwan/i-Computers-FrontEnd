@@ -76,3 +76,10 @@ jobs:
             VITE_GOOGLE_CLIENT_ID=${{ secrets.VITE_GOOGLE_CLIENT_ID }}
             VITE_SUPABASE_URL=${{ secrets.VITE_SUPABASE_URL }}
             VITE_SUPABASE_KEY=${{ secrets.VITE_SUPABASE_KEY }}
+
+      - name: Trigger deployment
+        uses: peter-evans/repository-dispatch@v3
+        with:
+          token: ${{ secrets.DEPLOYMENT_TOKEN }}
+          repository: piyumal-sandaruwan/i-Computers-Deployment
+          event-type: deploy
