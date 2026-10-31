@@ -38,7 +38,7 @@ export default function Footer() {
     "Returns & Refunds",
     "Where to buy",
     "Build My PC",
-    "PC Customization"
+    "compputer Customization"
   ];
 
   return (
