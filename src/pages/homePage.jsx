@@ -9,7 +9,7 @@ import Home from "./homeContent";
 import Footer from "../components/footer";
 import AboutPage from "./aboutPage";
 import ContactUsPage from "./contactUsPage";
-export default function HomePage(props){
+export default function HomePage(){
     return(
         <>
                 <div className="w-full h-full overflow-y-auto">

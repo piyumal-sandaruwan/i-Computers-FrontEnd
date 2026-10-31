@@ -33,44 +33,7 @@ const slides = [
 ];
 
 // ── REVIEWS ──────────────────────────────────────────────────────────────────
-const reviews = [
-  {
-    name: "Praneeth Randunu",
-    initials: "P",
-    text: "I recently purchased an iMac M3 worth 790,000 LKR and it was hands down the best experience I've ever had! The staff was knowledgeable, friendly, and ensured I had all the details.",
-    stars: 5,
-  },
-  {
-    name: "Ariyadasa Kalindu",
-    initials: "A",
-    text: "From the moment I walked in, I was impressed by the exceptional service. They helped me find the perfect CPU cooling solution — my temperatures dropped significantly.",
-    stars: 5,
-  },
-  {
-    name: "Tharusha",
-    initials: "T",
-    text: "Really good customer service. Motherboard repair done within an hour. Other shops said it couldn't be fixed — they fixed it quickly. 100% recommend i-Computers!",
-    stars: 5,
-  },
-  {
-    name: "Ashan Fernando",
-    initials: "A",
-    text: "I'm a music composer and chose i-Computers to build my new PC. They built me a stunning machine with the latest features, far exceeding my expectations.",
-    stars: 5,
-  },
-  {
-    name: "Thisal Prabod",
-    initials: "T",
-    text: "I visited to build my 1st PC. They gave me an in-depth explanation about all the components and guided me to select perfect fits. Outstanding service.",
-    stars: 5,
-  },
-  {
-    name: "Thusitha Madushan",
-    initials: "T",
-    text: "I was blown away by the amazing atmosphere. It's by far the best computer store I've ever been to! Friendly, knowledgeable, and always willing to help.",
-    stars: 5,
-  },
-];
+
 
 // ── SERVICES ─────────────────────────────────────────────────────────────────
 const services = [
@@ -97,17 +60,7 @@ const services = [
 ];
 
 // ── STARS ────────────────────────────────────────────────────────────────────
-function Stars({ count = 5 }) {
-  return (
-    <div className="flex gap-0.5">
-      {Array.from({ length: count }).map((_, i) => (
-        <svg key={i} className="w-4 h-4 text-amber-400 fill-current" viewBox="0 0 20 20">
-          <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-        </svg>
-      ))}
-    </div>
-  );
-}
+
 
 // ── MAIN ─────────────────────────────────────────────────────────────────────
 export default function HomeContent() {

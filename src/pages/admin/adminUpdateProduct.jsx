@@ -5,7 +5,7 @@ import axios from 'axios';
 import MediaUpload from '../../utils/mediaUpload.js';
 
 
-export default function AdminUpdateProduct(props) {
+export default function AdminUpdateProduct() {
 
     const location=useLocation(); {/* read the info brought from admin product page as json */}
     {/*console.log(location);  read the brought data */}

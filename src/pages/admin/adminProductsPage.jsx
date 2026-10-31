@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import Loader from "../../components/loader";
 import ProductDeleteButton from "../../components/productDeleteButton";
 
-export default function AdminProductsPage(props) {
+export default function AdminProductsPage() {
 
   const [products, setProducts] = useState([]);
   const[loaded,setLoaded]=useState(false);

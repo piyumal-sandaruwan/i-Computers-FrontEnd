@@ -1,4 +1,4 @@
-export function TestPage(props){
+export function TestPage(){
     return(
         
         <div className="w-full h-full bg-red-900 lg:bg-green-800">

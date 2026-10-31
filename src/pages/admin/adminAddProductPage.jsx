@@ -4,7 +4,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import MediaUpload from '../../utils/mediaUpload.js';
 
-export default function AdminAddProductPage(props) {
+export default function AdminAddProductPage() {
 
     const [productID, setProductID] = useState("");
     const [productName, setProductName] = useState("");

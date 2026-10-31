@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import Loader from "../../components/loader";
 import toast from "react-hot-toast";
 import { GoVerified } from "react-icons/go";
@@ -8,12 +8,9 @@ export default function AdminUsersPage() {
   const [users, setUsers] = useState([]);
   const [loaded, setLoaded] = useState(false);
 
-  useEffect(() => {
-    fetchUsers();
-  }, []);
-
-  const fetchUsers = () => {
+  const fetchUsers = useCallback(() => {
     const token = localStorage.getItem("token");
+
     axios
       .get(import.meta.env.VITE_BACKEND_URL + "/users/all", {
         headers: { Authorization: "Bearer " + token },
@@ -26,19 +23,23 @@ export default function AdminUsersPage() {
         console.error(err);
         setLoaded(true);
       });
-  };
+  }, []);
+
+  useEffect(() => {
+    fetchUsers();
+  }, [fetchUsers]);
 
   const baseImgUrl = import.meta.env.VITE_BACKEND_URL.replace("/api", "");
 
   return (
     <div className="w-full p-10 bg-gray-100 min-h-screen">
       <div className="bg-white shadow-xl rounded-2xl overflow-hidden relative">
-        
+
         {/* Header */}
         <div className="px-8 py-6 bg-accent text-white font-bold text-xl">
           User Management
         </div>
-        
+
         {!loaded ? (
           <div className="p-20">
             <Loader />
@@ -46,6 +47,7 @@ export default function AdminUsersPage() {
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse">
+
               {/* Table Headers */}
               <thead className="bg-gray-50 uppercase text-xs text-accent tracking-wider">
                 <tr>
@@ -62,21 +64,29 @@ export default function AdminUsersPage() {
               {/* Table Body */}
               <tbody>
                 {users.map((u, i) => (
-                  <tr key={i} className="border-b hover:bg-gray-50 transition duration-200">
-                    
+                  <tr
+                    key={i}
+                    className="border-b hover:bg-gray-50 transition duration-200"
+                  >
+
                     {/* Image Column */}
                     <td className="p-5">
-                      <img 
-                        src={baseImgUrl + u.image} 
-                        alt="user" 
+                      <img
+                        src={baseImgUrl + u.image}
+                        alt="user"
                         className="w-12 h-12 rounded-lg shadow object-cover border border-gray-200"
-                        onError={(e) => e.target.src = '/default.png'} 
+                        onError={(e) => {
+                          e.target.src = "/default.png";
+                        }}
                       />
                     </td>
 
                     {/* Email Column */}
                     <td className="p-5 font-bold flex flex-row text-accent">
-                      {u.email}{u.isEmailVerified?  <GoVerified className="text-lg flex flex-row ml-[10px] text-blue-400"/> :"" }
+                      {u.email}
+                      {u.isEmailVerified ? (
+                        <GoVerified className="text-lg flex flex-row ml-[10px] text-blue-400" />
+                      ) : ""}
                     </td>
 
                     {/* Name Columns */}
@@ -84,8 +94,10 @@ export default function AdminUsersPage() {
                     <td className="p-5">{u.lastName}</td>
 
                     {/* Role Column */}
-                    <td className="p-5 capitalize font-medium">{u.role}</td>
-                    
+                    <td className="p-5 capitalize font-medium">
+                      {u.role}
+                    </td>
+
                     {/* Status Column */}
                     <td className="p-5">
                       {u.isBlocked ? (
@@ -101,32 +113,45 @@ export default function AdminUsersPage() {
 
                     {/* Action Column */}
                     <td className="p-5">
-                        <button 
-                          className={`px-4 py-2 rounded-lg text-white text-xs font-bold transition duration-200 ${u.isBlocked ? "bg-green-500 hover:bg-green-600" : "bg-red-500 hover:bg-red-600"}`}
-                          onClick={async () => {
-                              try {
-                                // CHANGED TO .put TO MATCH BACKEND ROUTE
-                                await axios.put(import.meta.env.VITE_BACKEND_URL + `/users/toggle-block/${u.email}`, 
-                                { isBlocked: !u.isBlocked },
-                                {
-                                  headers : { Authorization : `Bearer ${localStorage.getItem("token")}` }
-                                });
-                                
-                                toast.success("User status updated");
-                                setLoaded(false);
-                                fetchUsers(); 
-                              } catch (err) {
-                                // Show specific error message from backend (e.g., "Admin cannot block themselves")
-                                toast.error(err.response?.data?.message || "Failed to update user");
+                      <button
+                        className={`px-4 py-2 rounded-lg text-white text-xs font-bold transition duration-200 ${
+                          u.isBlocked
+                            ? "bg-green-500 hover:bg-green-600"
+                            : "bg-red-500 hover:bg-red-600"
+                        }`}
+                        onClick={async () => {
+                          try {
+                            await axios.put(
+                              import.meta.env.VITE_BACKEND_URL +
+                                `/users/toggle-block/${u.email}`,
+                              { isBlocked: !u.isBlocked },
+                              {
+                                headers: {
+                                  Authorization: `Bearer ${localStorage.getItem("token")}`,
+                                },
                               }
-                          }}
-                        >
-                          {u.isBlocked ? "Unblock" : "Block"}
-                        </button>
-                     </td>     
+                            );
+
+                            toast.success("User status updated");
+                            setLoaded(false);
+                            fetchUsers();
+
+                          } catch (err) {
+                            toast.error(
+                              err.response?.data?.message ||
+                                "Failed to update user"
+                            );
+                          }
+                        }}
+                      >
+                        {u.isBlocked ? "Unblock" : "Block"}
+                      </button>
+                    </td>
+
                   </tr>
                 ))}
               </tbody>
+
             </table>
           </div>
         )}

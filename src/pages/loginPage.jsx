@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link} from "react-router-dom";
 import axios from "axios";
 import toast from "react-hot-toast";
 import Loader from "../components/loader";
@@ -10,7 +10,7 @@ export default function LoginPage() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
    
-    const navigate = useNavigate();
+    
     const [isLoading, setIsLoading] = useState(false);
     
     // Helper: decode JWT payload to extract user info as fallback

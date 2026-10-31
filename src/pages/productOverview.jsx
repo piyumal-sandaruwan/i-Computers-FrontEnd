@@ -1,149 +1,191 @@
-import { useState ,useEffect } from "react";
+
+import { useState, useEffect } from "react";
 import toast from "react-hot-toast";
-import { useNavigate, useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom";
 import Loader from "../components/loader";
 import axios from "axios";
 import ImageSlider from "../components/imageSlider";
 import { CgChevronRight } from "react-icons/cg";
 import { addToCart } from "../utils/cart";
-import AuthModal from "../components/authModal"; // Import the new modal
+import AuthModal from "../components/authModal";
 
-export default function ProductOverview(){
+export default function ProductOverview() {
     const navigate = useNavigate();
-    const params=useParams();
-    const [product,setProduct]=useState(null);
-    const [status,setStatus] = useState("loading");
+    const { productId } = useParams();
 
-    // NEW STATE FOR MODAL
+    const [productData, setProductData] = useState({
+        requestedId: null,
+        product: null,
+        status: "loading"
+    });
+
     const [showAuthModal, setShowAuthModal] = useState(false);
 
-    useEffect(()=>{
-        if(status=="loading"){
-            axios.get(import.meta.env.VITE_BACKEND_URL + "/products/" + params.productId).then(
-                (response)=>{
-                    setProduct(response.data);
-                    setStatus("success");
-                }
-            ).catch(
-                ()=>{
-                    toast.error("Product Not Found")
-                    setStatus("error");
-                }
-            )
-        }
-    },[])
+    useEffect(() => {
+        let isMounted = true;
 
-     // HELPER: Check if logged in
+        axios
+            .get(import.meta.env.VITE_BACKEND_URL + "/products/" + productId)
+            .then((response) => {
+                if (isMounted) {
+                    setProductData({
+                        requestedId: productId,
+                        product: response.data,
+                        status: "success"
+                    });
+                }
+            })
+            .catch(() => {
+                if (isMounted) {
+                    toast.error("Product Not Found");
+
+                    setProductData({
+                        requestedId: productId,
+                        product: null,
+                        status: "error"
+                    });
+                }
+            });
+
+        return () => {
+            isMounted = false;
+        };
+    }, [productId]);
+
+    // Show loading while fetching a new product
+    const isLoading =
+        productData.requestedId !== productId ||
+        productData.status === "loading";
+
+    const product =
+        productData.requestedId === productId
+            ? productData.product
+            : null;
+
+    const status = isLoading
+        ? "loading"
+        : productData.status;
+
+    // Check if user is logged in
     const checkLoginAndProceed = (action) => {
         const token = localStorage.getItem("token");
+
         if (token) {
-            action(); // If logged in, do the work
+            action();
         } else {
-            setShowAuthModal(true); // If not, show popup
+            setShowAuthModal(true);
         }
     };
 
-
-    return(
+    return (
         <>
-        <AuthModal isOpen={showAuthModal} onClose={() => setShowAuthModal(false)} />
-        { status=="loading" && <Loader/> }
+            <AuthModal
+                isOpen={showAuthModal}
+                onClose={() => setShowAuthModal(false)}
+            />
 
-        { status=="error" && 
-            <h1 className="text-center mt-10 text-2xl">
-                Error Loading Product
-            </h1>
-        }
+            {status === "loading" && <Loader />}
 
-        { status=="success" &&
-            <div className="w-full min-h-[calc(100vh-100px)] flex lg:flex-row flex-col">
-
-                <h1 className="text-4xl text-center sticky bg-white top-0 lg:hidden block font-semibold">
-                    {product.name}
+            {status === "error" && (
+                <h1 className="text-center mt-10 text-2xl">
+                    Error Loading Product
                 </h1>
+            )}
 
-                {/* LEFT SIDE */}
-                <div className="lg:w-1/2 w-full  lg:h-full lg:mt-3 flex">
-                    <ImageSlider images={product.images}/>
-                </div>
+            {status === "success" && product && (
+                <div className="w-full min-h-[calc(100vh-100px)] flex lg:flex-row flex-col">
 
-                {/* RIGHT SIDE */}
-                <div className="lg:w-1/2 w-full  lg:h-full p-10 flex flex-col gap-6">
-
-                    <h1 className="text-4xl hidden lg:block font-semibold">
+                    <h1 className="text-4xl text-center sticky bg-white top-0 lg:hidden block font-semibold">
                         {product.name}
                     </h1>
 
-                    <h2 className="text-lg text-slate-600">
-                        PRODUCT ID : {product.productId}
-                    </h2>
-
-                    <h2 className="text-lg font-semibold text-accent flex items-center">
-                        <CgChevronRight/>
-                        {product.category}
-                    </h2>
-                    {/*alternative names*/ }
-                    <p className="text-lg font-semibold text-accent flex items-center">
-                        {product.altNames && product.altNames.length>0&&(
-                            <h3 className="text-md text-secondary/80">
-                                {product.altNames.join(" | ")}
-                            </h3>
-                        )}
-                    </p>
-                    <p className="text-md text-justify p-3 text-secondary/90  overflow-y-auto">
-                        {product.description}
-                    </p>
-
-                    <div className="w-full">
-                        {product.labledPrice>product.price &&(
-                            <h2 className="text-secondary/80 line-through decoration-amber-400 decoration-2 mr-2">
-                                LKR. {product.labledPrice.toFixed(2)}
-                            </h2>
-                        )}
-
-                        <h2 className="text-accent font-semibold text-3xl">
-                            LKR. {product.price.toFixed(2)}
-                        </h2>
+                    {/* LEFT SIDE */}
+                    <div className="lg:w-1/2 w-full lg:h-full lg:mt-3 flex">
+                        <ImageSlider images={product.images} />
                     </div>
 
-                    <div className="w-full flex justify-center lg:justify-start   flex-row gap-4 mt-4">
+                    {/* RIGHT SIDE */}
+                    <div className="lg:w-1/2 w-full lg:h-full p-10 flex flex-col gap-6">
 
-                        <button
-                            onClick={()=>{
-                                 checkLoginAndProceed(() => {
-                                    addToCart(product, 1);
-                                });
-                                // addToCart(product,1)
-                            }}
-                            className="bg-accent text-white px-6 py-3 cursor-pointer rounded hover:bg-accent/90 transition"
-                        >
-                            Add to Cart
-                        </button>
+                        <h1 className="text-4xl hidden lg:block font-semibold">
+                            {product.name}
+                        </h1>
 
-                       <button
-                            onClick={() => {
-                                // WRAP IN LOGIN CHECK
-                                checkLoginAndProceed(() => {
-                                    navigate("/checkout", { state: [{
-                                        productId: product.productId,
-                                        name: product.name,
-                                        price: product.price,
-                                        labledPrice: product.labledPrice,
-                                        image: product.images[0],
-                                        quantity: 1
-                                    }]});
-                                });
-                            }}
-                            className="border-2 border-accent text-accent px-6 py-3 rounded hover:bg-accent cursor-pointer hover:text-white transition"
-                        >
-                            Buy Now
-                        </button>
+                        <h2 className="text-lg text-slate-600">
+                            PRODUCT ID : {product.productId}
+                        </h2>
 
+                        <h2 className="text-lg font-semibold text-accent flex items-center">
+                            <CgChevronRight />
+                            {product.category}
+                        </h2>
+
+                        {/* Alternative Names */}
+                        {product.altNames && product.altNames.length > 0 && (
+                            <p className="text-lg font-semibold text-accent flex items-center">
+                                <span className="text-md text-secondary/80">
+                                    {product.altNames.join(" | ")}
+                                </span>
+                            </p>
+                        )}
+
+                        <p className="text-md text-justify p-3 text-secondary/90 overflow-y-auto">
+                            {product.description}
+                        </p>
+
+                        <div className="w-full">
+                            {product.labledPrice > product.price && (
+                                <h2 className="text-secondary/80 line-through decoration-amber-400 decoration-2 mr-2">
+                                    LKR. {product.labledPrice.toFixed(2)}
+                                </h2>
+                            )}
+
+                            <h2 className="text-accent font-semibold text-3xl">
+                                LKR. {product.price.toFixed(2)}
+                            </h2>
+                        </div>
+
+                        <div className="w-full flex justify-center lg:justify-start flex-row gap-4 mt-4">
+
+                            {/* Add to Cart */}
+                            <button
+                                onClick={() => {
+                                    checkLoginAndProceed(() => {
+                                        addToCart(product, 1);
+                                    });
+                                }}
+                                className="bg-accent text-white px-6 py-3 cursor-pointer rounded hover:bg-accent/90 transition"
+                            >
+                                Add to Cart
+                            </button>
+
+                            {/* Buy Now */}
+                            <button
+                                onClick={() => {
+                                    checkLoginAndProceed(() => {
+                                        navigate("/checkout", {
+                                            state: [
+                                                {
+                                                    productId: product.productId,
+                                                    name: product.name,
+                                                    price: product.price,
+                                                    labledPrice: product.labledPrice,
+                                                    image: product.images[0],
+                                                    quantity: 1
+                                                }
+                                            ]
+                                        });
+                                    });
+                                }}
+                                className="border-2 border-accent text-accent px-6 py-3 rounded hover:bg-accent cursor-pointer hover:text-white transition"
+                            >
+                                Buy Now
+                            </button>
+
+                        </div>
                     </div>
                 </div>
-
-            </div>
-        }
+            )}
         </>
-    )
+    );
 }

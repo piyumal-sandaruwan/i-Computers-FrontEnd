@@ -4,7 +4,7 @@ import { BsChevronUp } from "react-icons/bs"
 import { useLocation, useNavigate } from "react-router-dom"
 import axios from "axios";
 
-export default function checkOutPage() {
+export default function CheckOutPage() {
     const location = useLocation();
     const navigate = useNavigate();
     const [name,setName]=useState("");
@@ -15,7 +15,7 @@ export default function checkOutPage() {
     const [cart, setCart] = useState(location.state || [])
 
     // Calculate Grand Total from state
-    const grandTotal = cart.reduce((acc, item) => acc + (item.price * item.quantity), 0);
+  
 
     // Secure the page: Redirect if no state exists
     useEffect(() => {
